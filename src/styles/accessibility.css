@@ -1,0 +1,138 @@
+/* ============================================================
+   ACCESSIBILITY & PERFORMANCE STYLES
+   WCAG 2.1 AA compliant — do not remove
+   ============================================================ */
+
+/* ── Skip-to-main-content link ─────────────────────────────
+   Visually hidden by default; appears on keyboard focus.
+   Provides sighted keyboard users a shortcut past the nav.
+   ─────────────────────────────────────────────────────────── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.75rem 1.5rem;
+  background: #c9a356;
+  color: #0a120d;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  border: 2px solid #0a120d;
+  /* Smooth reveal on focus */
+  transition: top 0.15s ease;
+}
+
+.skip-link:focus {
+  top: 1rem;
+  outline: 3px solid #0a120d;
+  outline-offset: 2px;
+}
+
+/* ── Global focus ring ──────────────────────────────────────
+   Replaces the browser default which may be invisible on
+   dark backgrounds. Gold ring matches brand identity.
+   ─────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid #c9a356 !important;
+  outline-offset: 3px !important;
+  border-radius: 2px;
+}
+
+/* Remove outline for mouse users only (not keyboard) */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ── Minimum touch targets (WCAG 2.5.5 — Level AAA) ────────
+   All interactive elements must be at least 48×48 CSS px.
+   ─────────────────────────────────────────────────────────── */
+button,
+a,
+[role="button"],
+[role="link"],
+input[type="submit"],
+input[type="button"] {
+  min-height: 44px; /* WCAG AA minimum */
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Override for block-level anchors in the nav */
+nav a {
+  display: inline-flex;
+  align-items: center;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+/* ── Reduced motion ─────────────────────────────────────────
+   Respects the OS-level "Reduce Motion" preference.
+   ─────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── High contrast mode support ─────────────────────────────
+   Ensures borders and separators remain visible in Windows
+   High Contrast / forced-colors mode.
+   ─────────────────────────────────────────────────────────── */
+@media (forced-colors: active) {
+  .gold-divider,
+  .gold-border {
+    border-color: ButtonText;
+  }
+}
+
+/* ── Visually hidden utility ────────────────────────────────
+   Hides content visually while keeping it accessible to
+   screen readers and search engine crawlers.
+   ─────────────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ── Scroll padding for anchored headings ───────────────────
+   Prevents fixed header from obscuring jump-to-section
+   destinations when using in-page anchor links.
+   ─────────────────────────────────────────────────────────── */
+:root {
+  scroll-padding-top: 90px;
+}
+
+/* ── Print styles ───────────────────────────────────────────
+   Minimal print layout: show contact info, hide nav.
+   ─────────────────────────────────────────────────────────── */
+@media print {
+  header[role="banner"],
+  .no-print {
+    display: none !important;
+  }
+
+  main {
+    padding: 0;
+  }
+
+  a::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75em;
+    color: #555;
+  }
+}
