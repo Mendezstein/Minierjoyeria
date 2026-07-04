@@ -1,11 +1,37 @@
-import { Outlet, useLocation } from "react-router";
+import { useEffect } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router";
 import { AnimatePresence, motion } from "motion/react";
-import { CartProvider } from "./context/CartContext";
 import { SEOHead } from "./components/SEOHead";
 import { Navbar } from "./components/Navbar";
 import { FooterSection } from "./components/FooterSection";
 import "../styles/fonts.css";
 import "../styles/accessibility.css";
+
+/*
+ * En la primera visita (pestaña nueva) siempre se entra por el inicio.
+ * Al refrescar dentro de una sección, el usuario se queda donde estaba:
+ * sessionStorage sobrevive al refresh pero no a cerrar la pestaña.
+ */
+function RedirectOnFirstVisit() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!sessionStorage.getItem("minier-visited")) {
+      sessionStorage.setItem("minier-visited", "1");
+      if (window.location.pathname !== "/") {
+        navigate("/", { replace: true });
+      }
+    }
+  }, []);
+  return null;
+}
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
 
 function PageTransition() {
   const location = useLocation();
@@ -26,8 +52,10 @@ function PageTransition() {
 
 export function Root() {
   return (
-    <CartProvider>
+    <>
       <SEOHead />
+      <RedirectOnFirstVisit />
+      <ScrollToTop />
       <a href="#main-content" className="skip-link">
         Ir al contenido principal
       </a>
@@ -36,6 +64,6 @@ export function Root() {
         <PageTransition />
       </main>
       <FooterSection />
-    </CartProvider>
+    </>
   );
 }

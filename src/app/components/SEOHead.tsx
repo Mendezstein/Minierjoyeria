@@ -4,66 +4,38 @@
  *
  * Schema.org types used:
  *  - JewelryStore (extends LocalBusiness) — powers Google local panels, Maps
- *  - Product + AggregateOffer — enables price/availability rich snippets
- *  - AggregateRating — enables star ratings in search results
  *  - BreadcrumbList — enables breadcrumb rich snippets
- *  - Review — individual testimonial entries for rich results
  */
 
 import { useEffect } from "react";
 
 /* ── Meta data ─────────────────────────────────────────────── */
 const SITE_META = {
-  title: "Maison Élara — Bespoke Wedding Bands & Fine Jewelry | New York",
+  title: "Minier Joyería — Joyería de Autor en Bogotá",
   description:
-    "Custom wedding bands and bespoke engagement rings handcrafted in New York since 1987. Book a complimentary private consultation with our master jewelers.",
-  canonical: "https://www.maisonelara.com/",
+    "Joyería de autor hecha a mano en Bogotá. Anillos de compromiso, alianzas de boda y piezas personalizadas. Agenda una consulta privada con nuestros maestros joyeros.",
+  canonical: "https://minierjoyeria.odoo.com/",
   ogImage: "https://images.unsplash.com/photo-1607703829739-c05b7beddf60?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=630&w=1200",
-  ogImageAlt: "Maison Élara — a luminous diamond ring resting on dark velvet",
-  twitterHandle: "@maisonelara",
+  ogImageAlt: "Minier Joyería — anillo de diamantes sobre terciopelo oscuro",
 };
 
 /* ── Schema.org: JewelryStore (LocalBusiness) ──────────────── */
 const LOCAL_BUSINESS_SCHEMA = {
   "@context": "https://schema.org",
   "@type": ["LocalBusiness", "JewelryStore"],
-  "@id": "https://www.maisonelara.com/#business",
-  name: "Maison Élara",
-  alternateName: "Maison Elara",
-  url: "https://www.maisonelara.com",
-  logo: {
-    "@type": "ImageObject",
-    url: "https://www.maisonelara.com/logo.png",
-    width: 200,
-    height: 60,
-  },
-  image: {
-    "@type": "ImageObject",
-    url: "https://images.unsplash.com/photo-1607703829739-c05b7beddf60?fm=jpg&w=1200",
-    width: 1200,
-    height: 800,
-  },
+  "@id": "https://minierjoyeria.odoo.com/#business",
+  name: "Minier Joyería",
+  url: "https://minierjoyeria.odoo.com",
   description:
-    "Bespoke wedding bands, engagement rings, and fine jewelry restorations handcrafted by master goldsmiths in New York since 1987.",
-  foundingDate: "1987",
+    "Joyería de autor: anillos de compromiso, alianzas de boda y piezas personalizadas elaboradas a mano en Bogotá, Colombia.",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "12 Rue de la Paix",
-    addressLocality: "New York",
-    addressRegion: "NY",
-    postalCode: "10001",
-    addressCountry: "US",
+    streetAddress: "Calle 12b # 6-21, Oficina 603, La Candelaria",
+    addressLocality: "Bogotá",
+    addressCountry: "CO",
   },
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: 40.7505,
-    longitude: -73.9934,
-  },
-  telephone: "+1-212-555-1890",
-  email: "hello@maisonelara.com",
-  currenciesAccepted: "USD",
-  paymentAccepted: "Cash, Credit Card, Bank Transfer",
-  priceRange: "$$$–$$$$",
+  telephone: "+57-318-667-5593",
+  priceRange: "$$$",
   openingHoursSpecification: [
     {
       "@type": "OpeningHoursSpecification",
@@ -77,121 +49,11 @@ const LOCAL_BUSINESS_SCHEMA = {
       opens: "10:00",
       closes: "17:00",
     },
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: "Sunday",
-      opens: "00:00",
-      closes: "00:00",
-      description: "By Appointment Only",
-    },
   ],
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.9",
-    reviewCount: "4200",
-    bestRating: "5",
-    worstRating: "1",
-  },
-  review: [
-    {
-      "@type": "Review",
-      "@id": "https://www.maisonelara.com/#review-1",
-      author: { "@type": "Person", name: "James & Olivia Hartwell" },
-      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
-      reviewBody:
-        "Maison Élara didn't just make a ring — they made a moment we relive every single day.",
-      datePublished: "2023-06-15",
-    },
-    {
-      "@type": "Review",
-      "@id": "https://www.maisonelara.com/#review-2",
-      author: { "@type": "Person", name: "Marcus & Elena Voss" },
-      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
-      reviewBody:
-        "What Élara created was beyond anything we could have imagined — a perfect tribute to the past, reimagined for our future.",
-      datePublished: "2023-11-20",
-    },
-    {
-      "@type": "Review",
-      "@id": "https://www.maisonelara.com/#review-3",
-      author: { "@type": "Person", name: "Sophie & Renée Marceau" },
-      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
-      reviewBody:
-        "From our very first consultation to the moment we opened the velvet box, the team treated us like family.",
-      datePublished: "2024-03-10",
-    },
-  ],
-  hasOfferCatalog: {
-    "@type": "OfferCatalog",
-    name: "Bespoke Fine Jewelry",
-    itemListElement: [
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Product",
-          name: "Custom Wedding Band",
-          description:
-            "Bespoke handcrafted wedding band in 18k gold or 950 platinum.",
-        },
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Product",
-          name: "Bespoke Engagement Ring",
-          description:
-            "One-of-a-kind engagement ring with conflict-free diamonds and ethically mined gemstones.",
-        },
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Product",
-          name: "Fine Jewelry Restoration",
-          description:
-            "Expert restoration of heirloom jewelry by master goldsmiths.",
-        },
-      },
-    ],
-  },
   sameAs: [
-    "https://www.instagram.com/maisonelara",
-    "https://www.pinterest.com/maisonelara",
-    "https://www.facebook.com/maisonelara",
+    "https://www.instagram.com/minier_joyeria/",
+    "https://www.facebook.com/minierjoyeria",
   ],
-};
-
-/* ── Schema.org: Product with AggregateOffer ───────────────── */
-const PRODUCT_SCHEMA = {
-  "@context": "https://schema.org",
-  "@type": "Product",
-  "@id": "https://www.maisonelara.com/#product-wedding-band",
-  name: "Bespoke Custom Wedding Band",
-  description:
-    "Handcrafted bespoke wedding band, designed exclusively for each couple. Available in 18k Yellow Gold, 18k Rose Gold, and 950 Platinum. Engraving included.",
-  brand: { "@type": "Brand", name: "Maison Élara" },
-  category: "Jewelry > Rings > Wedding Bands",
-  image:
-    "https://images.unsplash.com/photo-1589674668791-4889d2bba4c6?fm=jpg&w=800",
-  offers: {
-    "@type": "AggregateOffer",
-    priceCurrency: "USD",
-    lowPrice: "2500",
-    highPrice: "25000",
-    offerCount: "3",
-    availability: "https://schema.org/InStoreOnly",
-    seller: {
-      "@type": "Organization",
-      name: "Maison Élara",
-      url: "https://www.maisonelara.com",
-    },
-  },
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.9",
-    reviewCount: "4200",
-    bestRating: "5",
-  },
 };
 
 /* ── Schema.org: BreadcrumbList ────────────────────────────── */
@@ -202,8 +64,8 @@ const BREADCRUMB_SCHEMA = {
     {
       "@type": "ListItem",
       position: 1,
-      name: "Home",
-      item: "https://www.maisonelara.com",
+      name: "Inicio",
+      item: "https://minierjoyeria.odoo.com",
     },
   ],
 };
@@ -241,8 +103,8 @@ export function SEOHead() {
     /* Primary SEO meta tags */
     setMeta('meta[name="description"]', "name", "description", SITE_META.description);
     setMeta('meta[name="robots"]', "name", "robots", "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1");
-    setMeta('meta[name="keywords"]', "name", "keywords", "custom wedding bands, bespoke engagement rings, fine jewelry New York, jewelry restoration, handcrafted rings, luxury jeweler");
-    setMeta('meta[name="author"]', "name", "author", "Maison Élara");
+    setMeta('meta[name="keywords"]', "name", "keywords", "joyería de autor Bogotá, anillos de compromiso, alianzas de boda, joyería personalizada, joyería hecha a mano, Minier Joyería");
+    setMeta('meta[name="author"]', "name", "author", "Minier Joyería");
 
     /* Canonical URL */
     setLink("canonical", SITE_META.canonical);
@@ -253,7 +115,7 @@ export function SEOHead() {
     /* Open Graph — Facebook / LinkedIn / WhatsApp / Slack */
     setMeta('meta[property="og:type"]', "property", "og:type", "website");
     setMeta('meta[property="og:url"]', "property", "og:url", SITE_META.canonical);
-    setMeta('meta[property="og:site_name"]', "property", "og:site_name", "Maison Élara");
+    setMeta('meta[property="og:site_name"]', "property", "og:site_name", "Minier Joyería");
     setMeta('meta[property="og:title"]', "property", "og:title", SITE_META.title);
     setMeta('meta[property="og:description"]', "property", "og:description", SITE_META.description);
     setMeta('meta[property="og:image"]', "property", "og:image", SITE_META.ogImage);
@@ -262,12 +124,10 @@ export function SEOHead() {
     setMeta('meta[property="og:image:width"]', "property", "og:image:width", "1200");
     setMeta('meta[property="og:image:height"]', "property", "og:image:height", "630");
     setMeta('meta[property="og:image:alt"]', "property", "og:image:alt", SITE_META.ogImageAlt);
-    setMeta('meta[property="og:locale"]', "property", "og:locale", "en_US");
+    setMeta('meta[property="og:locale"]', "property", "og:locale", "es_CO");
 
     /* Twitter / X Card */
     setMeta('meta[name="twitter:card"]', "name", "twitter:card", "summary_large_image");
-    setMeta('meta[name="twitter:site"]', "name", "twitter:site", SITE_META.twitterHandle);
-    setMeta('meta[name="twitter:creator"]', "name", "twitter:creator", SITE_META.twitterHandle);
     setMeta('meta[name="twitter:title"]', "name", "twitter:title", SITE_META.title);
     setMeta('meta[name="twitter:description"]', "name", "twitter:description", SITE_META.description);
     setMeta('meta[name="twitter:image"]', "name", "twitter:image", SITE_META.ogImage);
@@ -320,7 +180,6 @@ export function SEOHead() {
     script.type = "application/ld+json";
     script.textContent = JSON.stringify([
       LOCAL_BUSINESS_SCHEMA,
-      PRODUCT_SCHEMA,
       BREADCRUMB_SCHEMA,
     ]);
     document.head.appendChild(script);

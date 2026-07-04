@@ -28,23 +28,26 @@
  */
 
 import { motion } from "motion/react";
+import { Link } from "react-router";
 import { OptimizedImage } from "./OptimizedImage";
 
 const BOOKING_BG =
   "https://images.unsplash.com/photo-1529519195486-16945f0fb37f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1400";
 
+const WHATSAPP_URL = "https://api.whatsapp.com/message/UN43TZUSLLQNI1?autoload=1&app_absent=0";
+
 const NAV_LINKS = [
-  { label: "Colecciones", href: "#collections" },
-  { label: "Nuestro Proceso", href: "#process" },
-  { label: "Galería", href: "#gallery" },
-  { label: "Sobre Nosotros", href: "#about" },
-  { label: "Empleos", href: "#careers" },
+  { label: "Colecciones", to: "/coleccion/anillos" },
+  { label: "Nuestro Proceso", to: "/proceso" },
+  { label: "Galería", to: "/galeria" },
+  { label: "Sobre Nosotros", to: "/nosotros" },
+  { label: "Contacto", to: "/contacto" },
 ] as const;
 
 const SOCIAL_LINKS = [
-  { label: "Seguir a Minier Joyería en Instagram", platform: "Instagram", href: "https://www.instagram.com/minierjoyeria" },
-  { label: "Seguir a Minier Joyería en Pinterest", platform: "Pinterest", href: "https://www.pinterest.com/minierjoyeria" },
+  { label: "Seguir a Minier Joyería en Instagram", platform: "Instagram", href: "https://www.instagram.com/minier_joyeria/" },
   { label: "Seguir a Minier Joyería en Facebook", platform: "Facebook", href: "https://www.facebook.com/minierjoyeria" },
+  { label: "Escribir a Minier Joyería por WhatsApp", platform: "WhatsApp", href: WHATSAPP_URL },
 ] as const;
 
 const HOURS = [
@@ -156,9 +159,9 @@ export function FooterSection() {
             Programa una consulta privada con uno de nuestros maestros joyeros.
             La primera cita es siempre gratuita.
           </p>
-          <a
-            href="mailto:hello@minierjoyeria.com?subject=Consultation%20Request"
-            aria-label="Reservar una consulta gratuita — abre tu cliente de correo"
+          <Link
+            to="/contacto"
+            aria-label="Reservar una consulta gratuita"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -179,7 +182,7 @@ export function FooterSection() {
             onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "#c9a356"; }}
           >
             Reservar una Consulta
-          </a>
+          </Link>
         </motion.div>
       </section>
 
@@ -273,8 +276,8 @@ export function FooterSection() {
             <ul role="list" style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
               {NAV_LINKS.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.to}
                     style={{
                       fontFamily: "'Inter', sans-serif",
                       fontSize: "0.82rem",
@@ -290,7 +293,7 @@ export function FooterSection() {
                     onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "rgba(250,248,245,0.5)"; }}
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -356,7 +359,7 @@ export function FooterSection() {
                 marginBottom: "1.25rem",
               }}
             >
-              Contact
+              Contacto
             </h3>
             {/*
               <address> — HTML5 element for contact/geo information.
@@ -391,7 +394,7 @@ export function FooterSection() {
                     lineHeight: 1.6,
                     fontWeight: 300,
                   }}
-                >Calle 12B #6 - 21<br />Oficina 603-Bogota</p>
+                >Calle 12B # 6-21, Oficina 603<br />La Candelaria, Bogotá</p>
               </div>
 
               <div>
@@ -408,8 +411,10 @@ export function FooterSection() {
                   Consultas
                 </p>
                 <a
-                  href="mailto:hello@minierjoyeria.com"
-                  aria-label="Email us at hello@minierjoyeria.com"
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Escríbenos por WhatsApp"
                   style={{
                     fontFamily: "'Inter', sans-serif",
                     fontSize: "0.82rem",
@@ -424,7 +429,7 @@ export function FooterSection() {
                   onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#c9a356"; }}
                   onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "rgba(250,248,245,0.5)"; }}
                 >
-                  hello@minierjoyeria.com
+                  WhatsApp: +57 318 667 5593
                 </a>
               </div>
 
@@ -442,8 +447,8 @@ export function FooterSection() {
                   Teléfono
                 </p>
                 <a
-                  href="tel:+12125551890"
-                  aria-label="Call us at +1 212 555 1890"
+                  href="tel:+573186675593"
+                  aria-label="Llámanos al +57 318 667 5593"
                   style={{
                     fontFamily: "'Inter', sans-serif",
                     fontSize: "0.82rem",
@@ -572,27 +577,6 @@ export function FooterSection() {
               </span>
             </div>
 
-            {/* Google rating placeholder */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem",
-                padding: "0.5rem 1rem",
-              }}
-            >
-              <span aria-hidden="true" style={{ color: "#c9a356", fontSize: "0.8rem" }}>★★★★★</span>
-              <span
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: "0.62rem",
-                  color: "rgba(250,248,245,0.35)",
-                  letterSpacing: "0.08em",
-                }}
-              >
-                4,9 / 5 · 4.200+ reseñas
-              </span>
-            </div>
           </div>
 
           {/* Legal links row */}
@@ -670,8 +654,7 @@ export function FooterSection() {
               display: "block",
             }}
           >
-            © {new Date().getFullYear()} Minier Joyería LLC. Todos los derechos reservados. Nueva York, EE.UU.
-            Joyero registrado y miembro de Jewelers of America.
+            © {new Date().getFullYear()} Minier Joyería. Todos los derechos reservados. Bogotá, Colombia.
           </small>
         </div>
       </div>

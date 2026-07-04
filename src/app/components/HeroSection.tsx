@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from "react";
+import { Link } from "react-router";
 import { motion } from "motion/react";
 import { OptimizedImage } from "./OptimizedImage";
 
@@ -106,10 +107,44 @@ export function HeroSection() {
         }}
       >
         {/* Eyebrow — ultra-minimal, very high tracking */}
-        
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            fontSize: "0.62rem",
+            fontWeight: 400,
+            letterSpacing: "0.5em",
+            textTransform: "uppercase",
+            color: "rgba(201,163,86,0.85)",
+            marginBottom: "1.25rem",
+          }}
+        >
+          Joyería de Autor · Bogotá
+        </motion.p>
 
         {/* H1 — editorial, airy, one elegant thought */}
-        
+        <motion.h1
+          id="hero-heading"
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: "clamp(2.2rem, 6vw, 4.2rem)",
+            fontWeight: 400,
+            color: "#faf8f5",
+            lineHeight: 1.12,
+            letterSpacing: "0.02em",
+            maxWidth: "18ch",
+            marginBottom: "2rem",
+            textWrap: "balance",
+          }}
+        >
+          Minier{" "}
+          <em style={{ color: "#c9a356", fontStyle: "italic" }}>Joyería</em>
+        </motion.h1>
 
         {/* Single ghost CTA — premium, no fills, slow hover */}
         <motion.div
@@ -117,7 +152,29 @@ export function HeroSection() {
           animate={{ opacity: 1 }}
           transition={{ duration: 1.2, delay: 0.9, ease: "easeOut" }}
         >
-          
+          <Link
+            to="/galeria"
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: "0.66rem",
+              fontWeight: 400,
+              letterSpacing: "0.32em",
+              textTransform: "uppercase",
+              color: "rgba(250,248,245,0.9)",
+              textDecoration: "none",
+              border: "1px solid rgba(250,248,245,0.35)",
+              padding: "1rem 2.5rem",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.75rem",
+              transition: "border-color 0.5s, color 0.5s",
+            }}
+            onMouseEnter={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.borderColor = "#c9a356"; el.style.color = "#c9a356"; }}
+            onMouseLeave={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.borderColor = "rgba(250,248,245,0.35)"; el.style.color = "rgba(250,248,245,0.9)"; }}
+          >
+            Descubrir la colección
+            <span aria-hidden="true" style={{ fontSize: "0.7rem", opacity: 0.6 }}>→</span>
+          </Link>
         </motion.div>
       </div>
     </section>

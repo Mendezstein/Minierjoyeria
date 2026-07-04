@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
-import { Gem, Droplet, Star, Heart, Crown, Sparkles, Sun, Gift, ShoppingBag } from "lucide-react";
-import { useCart } from "../context/CartContext";
+import { Gem, Droplet, Star, Heart, Crown, Sparkles, Sun, Gift } from "lucide-react";
 
 const COLLECTION_ITEMS = [
   { label: "Anillos",        description: "Compromiso y alianzas",     Icon: Gem,      to: "/coleccion/anillos" },
@@ -42,7 +41,6 @@ const LINK_BASE: React.CSSProperties = {
 };
 
 export function Navbar() {
-  const { count: cartCount } = useCart();
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -165,19 +163,6 @@ export function Navbar() {
           Reservar
         </Link>
 
-        {/* Cart */}
-        <button
-          aria-label={`Ver carrito (${cartCount} artículos)`}
-          style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(250,248,245,0.85)", display: "flex", alignItems: "center", justifyContent: "center", minWidth: "44px", minHeight: "44px", position: "relative", padding: "0.5rem", transition: "color 0.25s", flexShrink: 0 }}
-          onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.color = "#c9a356"; }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = "rgba(250,248,245,0.85)"; }}
-        >
-          <ShoppingBag size={20} strokeWidth={1.5} />
-          <span aria-hidden="true" style={{ position: "absolute", top: "6px", right: "4px", minWidth: "16px", height: "16px", background: "#c9a356", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Inter', sans-serif", fontSize: "0.55rem", fontWeight: 600, color: "#0a120d", lineHeight: 1, padding: "0 3px" }}>
-            {cartCount}
-          </span>
-        </button>
-
         {/* Hamburger */}
         <button
           ref={hamburgerRef}
@@ -207,19 +192,19 @@ export function Navbar() {
             aria-label="Colecciones"
             style={{ overflow: "hidden", borderTop: "1px solid rgba(201,163,86,0.22)", background: "rgba(10,18,13,0.98)" }}
           >
-            <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "2.5rem 2rem", display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0" }}>
+            <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "1.25rem 2rem", display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0" }}>
               {COLLECTION_ITEMS.map((item, i) => (
                 <Link
                   key={item.label}
                   to={item.to}
                   role="menuitem"
                   onClick={() => setMegaOpen(false)}
-                  style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "0.65rem", padding: "1.5rem 1rem", textDecoration: "none", borderRight: i % 4 !== 3 ? "1px solid rgba(201,163,86,0.1)" : "none", borderBottom: i < 4 ? "1px solid rgba(201,163,86,0.1)" : "none", transition: "background 0.2s" }}
+                  style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "0.45rem", padding: "0.9rem 0.75rem", textDecoration: "none", borderRight: i % 4 !== 3 ? "1px solid rgba(201,163,86,0.1)" : "none", borderBottom: i < 4 ? "1px solid rgba(201,163,86,0.1)" : "none", transition: "background 0.2s" }}
                   onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(201,163,86,0.06)"; }}
                   onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "transparent"; }}
                 >
-                  <span aria-hidden="true" style={{ color: "#c9a356", display: "flex", alignItems: "center", justifyContent: "center", width: "40px", height: "40px", border: "1px solid rgba(201,163,86,0.3)", flexShrink: 0 }}>
-                    <item.Icon size={18} strokeWidth={1.25} />
+                  <span aria-hidden="true" style={{ color: "#c9a356", display: "flex", alignItems: "center", justifyContent: "center", width: "34px", height: "34px", border: "1px solid rgba(201,163,86,0.3)", flexShrink: 0 }}>
+                    <item.Icon size={16} strokeWidth={1.25} />
                   </span>
                   <span style={{ fontFamily: "'Playfair Display', serif", fontSize: "0.88rem", color: "#faf8f5", display: "block", lineHeight: 1.3 }}>{item.label}</span>
                   <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6rem", letterSpacing: "0.06em", color: "rgba(250,248,245,0.4)", display: "block" }}>{item.description}</span>

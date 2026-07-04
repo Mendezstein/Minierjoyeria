@@ -1,5 +1,4 @@
 import { motion } from "motion/react";
-import { Link } from "react-router";
 import { PageHero } from "../components/PageHero";
 import { ServicesSection } from "../components/ServicesSection";
 
@@ -21,9 +20,9 @@ export function NosotrosPage() {
       />
 
       {/* Brand story */}
-      <section style={{ background: "#f9f7f2", padding: "6rem clamp(2rem, 8vw, 9rem)" }}>
+      <section style={{ background: "#f9f7f2", padding: "clamp(3.5rem, 7vw, 6rem) clamp(1.5rem, 6vw, 9rem)" }}>
         <div style={{ maxWidth: "860px", margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5rem", alignItems: "center" }} className="grid-cols-1 md:grid-cols-2">
+          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "clamp(2.5rem, 5vw, 5rem)", alignItems: "center" }}>
             <motion.div
               initial={{ opacity: 0, x: -24 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -64,37 +63,6 @@ export function NosotrosPage() {
       </section>
 
       <ServicesSection />
-
-      {/* CTA */}
-      <section style={{ background: "#0a120d", padding: "6rem 2rem", textAlign: "center" }}>
-        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6rem", letterSpacing: "0.5em", textTransform: "uppercase", color: "rgba(201,163,86,0.65)", marginBottom: "1.5rem" }}>
-          Comienza Tu Historia
-        </p>
-        <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 400, color: "#faf8f5", marginBottom: "2rem" }}>
-          ¿Listo para crear algo{" "}
-          <em style={{ color: "#c9a356", fontStyle: "italic" }}>eterno?</em>
-        </h2>
-        <Link
-          to="/contacto"
-          style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: "0.66rem",
-            letterSpacing: "0.32em",
-            textTransform: "uppercase",
-            color: "#0a120d",
-            background: "#c9a356",
-            padding: "1.1rem 3rem",
-            textDecoration: "none",
-            display: "inline-flex",
-            alignItems: "center",
-            transition: "background 0.3s",
-          }}
-          onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "#b8963e"; }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "#c9a356"; }}
-        >
-          Reservar una Consulta
-        </Link>
-      </section>
     </>
   );
 }

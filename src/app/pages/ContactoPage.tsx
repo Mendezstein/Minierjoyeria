@@ -45,8 +45,8 @@ export function ContactoPage() {
         subtitle="La primera cita es siempre gratuita. Cuéntanos tu historia y comenzamos juntos."
       />
 
-      <section style={{ background: "#f9f7f2", padding: "6rem clamp(2rem, 6vw, 6rem)" }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5rem", alignItems: "start" }} className="grid-cols-1 md:grid-cols-2">
+      <section style={{ background: "#f9f7f2", padding: "clamp(3.5rem, 7vw, 6rem) clamp(1.5rem, 5vw, 6rem)" }}>
+        <div className="grid grid-cols-1 md:grid-cols-2" style={{ maxWidth: "1100px", margin: "0 auto", gap: "clamp(3rem, 5vw, 5rem)", alignItems: "start" }}>
 
           {/* Contact info */}
           <motion.div
@@ -63,9 +63,9 @@ export function ContactoPage() {
             </h2>
 
             {[
-              { label: "Atelier", value: "12 Rue de la Paix\nNueva York, NY 10001" },
-              { label: "Correo", value: "hello@minierjoyeria.com" },
-              { label: "Teléfono", value: "+1 (212) 555-1890" },
+              { label: "Atelier", value: "Calle 12B # 6-21, Oficina 603\nLa Candelaria, Bogotá" },
+              { label: "WhatsApp", value: "+57 318 667 5593" },
+              { label: "Teléfono", value: "+57 (318) 667-5593" },
             ].map(({ label, value }) => (
               <div key={label} style={{ marginBottom: "2rem" }}>
                 <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(180,147,80,0.7)", marginBottom: "0.4rem" }}>{label}</p>
@@ -97,7 +97,7 @@ export function ContactoPage() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
+                <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "2rem" }}>
                   <div>
                     <label style={labelStyle}>Nombre</label>
                     <input required style={inputStyle} placeholder="Tu nombre" value={form.nombre} onChange={(e) => setForm({ ...form, nombre: e.target.value })}
@@ -106,7 +106,7 @@ export function ContactoPage() {
                   </div>
                   <div>
                     <label style={labelStyle}>Teléfono</label>
-                    <input style={inputStyle} placeholder="+1 (555) 000-0000" value={form.telefono} onChange={(e) => setForm({ ...form, telefono: e.target.value })}
+                    <input type="tel" style={inputStyle} placeholder="+57 300 000 0000" value={form.telefono} onChange={(e) => setForm({ ...form, telefono: e.target.value })}
                       onFocus={(e) => { (e.target as HTMLInputElement).style.borderBottomColor = "#c9a356"; }}
                       onBlur={(e) => { (e.target as HTMLInputElement).style.borderBottomColor = "rgba(26,23,20,0.2)"; }} />
                   </div>

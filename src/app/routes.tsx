@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import { Root } from "./Root";
 import { HomePage } from "./pages/HomePage";
 import { ProcesoPage } from "./pages/ProcesoPage";
@@ -18,6 +18,8 @@ export const router = createBrowserRouter([
       { path: "nosotros", Component: NosotrosPage },
       { path: "contacto", Component: ContactoPage },
       { path: "coleccion/:categoria", Component: ColeccionPage },
+      // Cualquier ruta desconocida vuelve siempre al inicio
+      { path: "*", element: <Navigate to="/" replace /> },
     ],
   },
 ]);

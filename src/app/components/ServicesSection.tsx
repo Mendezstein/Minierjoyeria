@@ -23,6 +23,7 @@
  */
 
 import { motion } from "motion/react";
+import { Link } from "react-router";
 
 const SERVICES = [
   {
@@ -32,7 +33,7 @@ const SERVICES = [
     description:
       "Tu alianza debe ser tan singular como tu compromiso. Colaboramos estrechamente con cada pareja para diseñar piezas que honren vuestra historia única — desde el clásico oro hasta los intrincados engastes pavé.",
     cta: "Explorar Alianzas",
-    href: "#collections",
+    to: "/coleccion/anillos",
   },
   {
     number: "02",
@@ -41,16 +42,16 @@ const SERVICES = [
     description:
       "Desde el primer boceto hasta el último pulido, cada anillo de compromiso se concibe exclusivamente para ti. Utilizamos solo diamantes libres de conflicto y gemas de extracción ética de calidad excepcional.",
     cta: "Diseña Tu Anillo",
-    href: "#collections",
+    to: "/coleccion/compromiso",
   },
   {
     number: "03",
-    title: "Restauración de Joyería Fina",
-    tag: "Cuidado del Patrimonio",
+    title: "Joyería de Alta Calidad",
+    tag: "Nuestro Compromiso",
     description:
-      "Las joyas heredadas tienen un significado insustituible. Nuestros maestros orfebres insuflan nueva vida a las piezas queridas, restaurando su belleza mientras preservan los recuerdos entretejidos en cada detalle.",
-    cta: "Restaurar una Joya Familiar",
-    href: "#contact",
+      "Cada pieza que sale de nuestro atelier se elabora con metales preciosos certificados y gemas seleccionadas una a una. Del boceto al pulido final, un mismo maestro joyero cuida cada detalle para que tu joya perdure generaciones.",
+    cta: "Conocer la Colección",
+    to: "/galeria",
   },
 ] as const;
 
@@ -225,8 +226,8 @@ export function ServicesSection() {
                 </p>
 
                 {/* CTA link — contextual aria-label for screen readers */}
-                <a
-                  href={svc.href}
+                <Link
+                  to={svc.to}
                   aria-label={svc.cta}
                   style={{
                     background: "none",
@@ -250,7 +251,7 @@ export function ServicesSection() {
                 >
                   {svc.cta}
                   <span aria-hidden="true" style={{ fontSize: "1rem" }}>→</span>
-                </a>
+                </Link>
               </motion.article>
             </li>
           ))}

@@ -138,7 +138,7 @@ export function ProcessSection() {
               marginBottom: "1rem",
             }}
           >
-            El Método Élara
+            El Método Minier
           </p>
           <h2
             id="process-heading"
