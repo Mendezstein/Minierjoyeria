@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import { PageHero } from "../components/PageHero";
 import { ProductItem } from "../components/ProductItem";
-import { COLLECTIONS, COLLECTION_LABELS, type CollectionId } from "../data/collections";
+import { COLLECTIONS, COLLECTION_LABELS, COLLECTION_INTROS, type CollectionId } from "../data/collections";
 
 export function ColeccionPage() {
   const { categoria } = useParams<{ categoria: string }>();
@@ -34,7 +34,7 @@ export function ColeccionPage() {
       <PageHero
         eyebrow="Colección"
         title={label}
-        subtitle={`${items.length} piezas elaboradas a mano en nuestro atelier.`}
+        subtitle={COLLECTION_INTROS[id]}
       />
 
       <section style={{ background: "#f9f7f2", paddingTop: "3.5rem", paddingBottom: "6rem" }}>

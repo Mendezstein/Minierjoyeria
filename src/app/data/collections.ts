@@ -17,6 +17,20 @@ export const COLLECTION_LABELS: Record<CollectionId, string> = {
   pulseras:   "Pulseras",
 };
 
+/* Texto introductorio por colección — visible bajo el título y clave para SEO */
+export const COLLECTION_INTROS: Record<CollectionId, string> = {
+  anillos:
+    "Anillos hechos a mano en Bogotá: solitarios, alianzas y piezas de alta joyería en oro 18k, platino y esmeraldas colombianas.",
+  compromiso:
+    "Anillos de compromiso diseñados a tu medida en Bogotá, con diamantes y gemas certificadas de origen ético. Del boceto 3D a la pieza final.",
+  arretes:
+    "Aretes y topos elaborados a mano en nuestro atelier: esmeraldas colombianas, diamantes y oro de 18 kilates.",
+  collares:
+    "Collares y colgantes de alta joyería hechos a mano: oro, plata 950 y gemas seleccionadas una a una.",
+  pulseras:
+    "Pulseras artesanales en oro 18k y diamantes, como nuestra pulsera tennis, elaboradas a mano en Bogotá.",
+};
+
 /*
  * Fotos reales del taller: viven en public/images/ como .webp.
  * Las piezas con url "/images/..." son fotografías propias de Minier;

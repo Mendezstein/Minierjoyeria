@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import { PageHero } from "../components/PageHero";
+import { FAQS } from "../data/faq";
 
 export function ContactoPage() {
   const [sent, setSent] = useState(false);
@@ -149,6 +150,56 @@ export function ContactoPage() {
               </form>
             )}
           </motion.div>
+        </div>
+      </section>
+
+      {/* Preguntas frecuentes */}
+      <section
+        aria-labelledby="faq-heading"
+        style={{ background: "#f9f7f2", padding: "0 clamp(1.5rem, 5vw, 6rem) clamp(4rem, 7vw, 6rem)" }}
+      >
+        <div style={{ maxWidth: "760px", margin: "0 auto", borderTop: "1px solid rgba(26,23,20,0.1)", paddingTop: "clamp(3rem, 6vw, 4.5rem)" }}>
+          <header style={{ textAlign: "center", marginBottom: "2.5rem" }}>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6rem", letterSpacing: "0.45em", textTransform: "uppercase", color: "rgba(180,147,80,0.75)", marginBottom: "1rem" }}>
+              Resolvemos tus dudas
+            </p>
+            <h2
+              id="faq-heading"
+              style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(1.5rem, 3vw, 2.2rem)", fontWeight: 400, color: "#1a1714", letterSpacing: "0.02em" }}
+            >
+              Preguntas Frecuentes
+            </h2>
+          </header>
+
+          <div>
+            {FAQS.map((faq) => (
+              <details
+                key={faq.question}
+                style={{ borderBottom: "1px solid rgba(26,23,20,0.1)" }}
+              >
+                <summary
+                  style={{
+                    fontFamily: "'Playfair Display', serif",
+                    fontSize: "1.02rem",
+                    color: "#1a1714",
+                    padding: "1.25rem 0.25rem",
+                    cursor: "pointer",
+                    listStyle: "none",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: "1rem",
+                  }}
+                >
+                  {faq.question}
+                  <span aria-hidden="true" style={{ color: "#c9a356", fontSize: "0.85rem", flexShrink: 0 }}>+</span>
+                </summary>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.86rem", color: "#6a6460", lineHeight: 1.8, fontWeight: 300, padding: "0 0.25rem 1.5rem", maxWidth: "68ch" }}>
+                  {faq.answer}
+                </p>
+              </details>
+            ))}
+          </div>
         </div>
       </section>
     </>

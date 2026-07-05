@@ -11,7 +11,8 @@
 
 import { useEffect } from "react";
 import { useLocation } from "react-router";
-import { COLLECTION_LABELS, type CollectionId } from "../data/collections";
+import { COLLECTIONS, COLLECTION_LABELS, type CollectionId } from "../data/collections";
+import { FAQS } from "../data/faq";
 
 const SITE_URL = "https://www.minierjoyeria.com";
 const SITE_NAME = "Minier Joyería";
@@ -118,6 +119,57 @@ const LOCAL_BUSINESS_SCHEMA = {
   ],
 };
 
+/* ── Schema.org dinámico por ruta ───────────────────────────
+   BreadcrumbList en páginas internas, ItemList con las piezas
+   en cada colección y FAQPage en /contacto. */
+function schemasForPath(pathname: string): object[] {
+  const clean = pathname.replace(/\/+$/, "") || "/";
+  const schemas: object[] = [];
+
+  if (clean !== "/") {
+    const pageName = metaForPath(clean).title.split("|")[0].replace(/—.*/, "").trim();
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Inicio", item: `${SITE_URL}/` },
+        { "@type": "ListItem", position: 2, name: pageName, item: `${SITE_URL}${clean}` },
+      ],
+    });
+  }
+
+  const match = clean.match(/^\/coleccion\/([^/]+)$/);
+  if (match && COLLECTIONS[match[1] as CollectionId]) {
+    const id = match[1] as CollectionId;
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: `${COLLECTION_LABELS[id]} — ${SITE_NAME}`,
+      itemListElement: COLLECTIONS[id].map((item, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: item.label,
+        image: item.url.startsWith("/") ? `${SITE_URL}${item.url}` : item.url,
+        url: `${SITE_URL}${clean}`,
+      })),
+    });
+  }
+
+  if (clean === "/contacto") {
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: FAQS.map((f) => ({
+        "@type": "Question",
+        name: f.question,
+        acceptedAnswer: { "@type": "Answer", text: f.answer },
+      })),
+    });
+  }
+
+  return schemas;
+}
+
 /* ── Helper: upsert a <meta> tag ────────────────────────────── */
 function setMeta(selector: string, attrKey: string, attrValue: string, content: string) {
   let el = document.head.querySelector<HTMLMetaElement>(selector);
@@ -215,13 +267,24 @@ export function SEOHead() {
     setMeta('meta[property="og:description"]', "property", "og:description", description);
     setMeta('meta[property="og:url"]', "property", "og:url", url);
     setMeta('meta[property="og:image"]', "property", "og:image", `${SITE_URL}/og-image.png`);
-    setMeta('meta[property="og:image:alt"]', "property", "og:image:alt", "Logo de Minier Joyería — emblema dorado sobre verde esmeralda");
+    setMeta('meta[property="og:image:alt"]', "property", "og:image:alt", "Anillo de compromiso hecho a mano y logo de Minier Joyería");
     setMeta('meta[property="og:locale"]', "property", "og:locale", "es_CO");
 
-    setMeta('meta[name="twitter:card"]', "name", "twitter:card", "summary");
+    setMeta('meta[name="twitter:card"]', "name", "twitter:card", "summary_large_image");
     setMeta('meta[name="twitter:title"]', "name", "twitter:title", title);
     setMeta('meta[name="twitter:description"]', "name", "twitter:description", description);
     setMeta('meta[name="twitter:image"]', "name", "twitter:image", `${SITE_URL}/og-image.png`);
+
+    /* JSON-LD específico de la ruta (breadcrumbs, colección, FAQ) */
+    document.head.querySelector("#schema-route")?.remove();
+    const routeSchemas = schemasForPath(clean);
+    if (routeSchemas.length > 0) {
+      const s = document.createElement("script");
+      s.id = "schema-route";
+      s.type = "application/ld+json";
+      s.textContent = JSON.stringify(routeSchemas);
+      document.head.appendChild(s);
+    }
   }, [pathname]);
 
   return null;
