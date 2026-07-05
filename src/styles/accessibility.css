@@ -1,3 +1,7 @@
+/* Envuelto en @layer base: las reglas sin layer siempre ganan sobre las
+   utilidades de Tailwind (que viven en @layer utilities), y eso rompía
+   hidden/md:hidden en <a> y <button>. Dentro de base, utilities manda. */
+@layer base {
 /* ============================================================
    ACCESSIBILITY & PERFORMANCE STYLES
    WCAG 2.1 AA compliant — do not remove
@@ -135,4 +139,6 @@ nav a {
     font-size: 0.75em;
     color: #555;
   }
+}
+
 }
