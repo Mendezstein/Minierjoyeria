@@ -1,31 +1,92 @@
 /**
- * SEOHead — Injects all SEO, Open Graph, Twitter Card, and Schema.org
- * structured data into document.head via useEffect (SPA-safe).
+ * SEOHead — Injects SEO, Open Graph, Twitter Card, and Schema.org
+ * structured data into document.head (SPA-safe).
  *
- * Schema.org types used:
- *  - JewelryStore (extends LocalBusiness) — powers Google local panels, Maps
- *  - BreadcrumbList — enables breadcrumb rich snippets
+ * Two layers:
+ *  1. Static (once): preconnects, JSON-LD LocalBusiness, theme-color.
+ *  2. Per-route (on navigation): title, description, canonical, og:*.
+ *     Google renders JS, so unique titles per URL are what let each
+ *     page rank on its own.
  */
 
 import { useEffect } from "react";
+import { useLocation } from "react-router";
+import { COLLECTION_LABELS, type CollectionId } from "../data/collections";
 
-/* ── Meta data ─────────────────────────────────────────────── */
-const SITE_META = {
+const SITE_URL = "https://www.minierjoyeria.com";
+const SITE_NAME = "Minier Joyería";
+
+const DEFAULT_META = {
   title: "Minier Joyería — Joyería de Autor en Bogotá",
   description:
     "Joyería de autor hecha a mano en Bogotá. Anillos de compromiso, alianzas de boda y piezas personalizadas. Agenda una consulta privada con nuestros maestros joyeros.",
-  canonical: "https://minierjoyeria.odoo.com/",
-  ogImage: "https://images.unsplash.com/photo-1607703829739-c05b7beddf60?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=630&w=1200",
-  ogImageAlt: "Minier Joyería — anillo de diamantes sobre terciopelo oscuro",
 };
+
+/* ── Meta por ruta ─────────────────────────────────────────── */
+const ROUTE_META: Record<string, { title: string; description: string }> = {
+  "/": DEFAULT_META,
+  "/galeria": {
+    title: `Galería de Piezas | ${SITE_NAME}`,
+    description:
+      "Explora nuestra galería de anillos, anillos de compromiso, aretes y collares hechos a mano en nuestro atelier de Bogotá.",
+  },
+  "/proceso": {
+    title: `Nuestro Proceso Artesanal | ${SITE_NAME}`,
+    description:
+      "Consulta privada, boceto 3D con modelo en cera y elaboración artesanal: así creamos cada joya personalizada en Minier Joyería, Bogotá.",
+  },
+  "/nosotros": {
+    title: `Nuestra Historia | ${SITE_NAME}`,
+    description:
+      "Conoce Minier Joyería: joyería de autor en La Candelaria, Bogotá. Materiales de origen ético y piezas únicas elaboradas a mano.",
+  },
+  "/contacto": {
+    title: `Reservar una Consulta | ${SITE_NAME}`,
+    description:
+      "Agenda una consulta gratuita en nuestro atelier de Bogotá o escríbenos por WhatsApp. Diseñamos la joya que imaginas.",
+  },
+};
+
+const COLLECTION_DESCRIPTIONS: Record<CollectionId, string> = {
+  anillos: "Anillos artesanales en oro y platino hechos a mano en Bogotá: solitarios, alianzas y piezas de alta joyería de Minier Joyería.",
+  compromiso: "Anillos de compromiso personalizados en Bogotá, diseñados a tu medida con diamantes y gemas certificadas. Minier Joyería.",
+  arretes: "Aretes artesanales en oro 18k, plata y perlas, elaborados a mano en el atelier de Minier Joyería en Bogotá.",
+  collares: "Collares y colgantes de alta joyería hechos a mano en Bogotá: oro, plata y gemas seleccionadas. Minier Joyería.",
+};
+
+function metaForPath(pathname: string): { title: string; description: string } {
+  const clean = pathname.replace(/\/+$/, "") || "/";
+  if (ROUTE_META[clean]) return ROUTE_META[clean];
+
+  const match = clean.match(/^\/coleccion\/([^/]+)$/);
+  if (match) {
+    const id = match[1] as CollectionId;
+    const label = COLLECTION_LABELS[id];
+    if (label) {
+      return {
+        title: `${label} | ${SITE_NAME}`,
+        description: COLLECTION_DESCRIPTIONS[id] ?? DEFAULT_META.description,
+      };
+    }
+    return { title: `Colecciones | ${SITE_NAME}`, description: DEFAULT_META.description };
+  }
+  return DEFAULT_META;
+}
 
 /* ── Schema.org: JewelryStore (LocalBusiness) ──────────────── */
 const LOCAL_BUSINESS_SCHEMA = {
   "@context": "https://schema.org",
   "@type": ["LocalBusiness", "JewelryStore"],
-  "@id": "https://minierjoyeria.odoo.com/#business",
-  name: "Minier Joyería",
-  url: "https://minierjoyeria.odoo.com",
+  "@id": `${SITE_URL}/#business`,
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: {
+    "@type": "ImageObject",
+    url: `${SITE_URL}/logo.png`,
+    width: 512,
+    height: 512,
+  },
+  image: `${SITE_URL}/og-image.png`,
   description:
     "Joyería de autor: anillos de compromiso, alianzas de boda y piezas personalizadas elaboradas a mano en Bogotá, Colombia.",
   address: {
@@ -56,20 +117,6 @@ const LOCAL_BUSINESS_SCHEMA = {
   ],
 };
 
-/* ── Schema.org: BreadcrumbList ────────────────────────────── */
-const BREADCRUMB_SCHEMA = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "Inicio",
-      item: "https://minierjoyeria.odoo.com",
-    },
-  ],
-};
-
 /* ── Helper: upsert a <meta> tag ────────────────────────────── */
 function setMeta(selector: string, attrKey: string, attrValue: string, content: string) {
   let el = document.head.querySelector<HTMLMetaElement>(selector);
@@ -82,7 +129,7 @@ function setMeta(selector: string, attrKey: string, attrValue: string, content: 
 }
 
 /* ── Helper: upsert a <link> tag ─────────────────────────── */
-function setLink(rel: string, href: string, extra?: Record<string, string>) {
+function setLink(rel: string, href: string) {
   const selector = `link[rel="${rel}"]`;
   let el = document.head.querySelector<HTMLLinkElement>(selector);
   if (!el) {
@@ -91,47 +138,20 @@ function setLink(rel: string, href: string, extra?: Record<string, string>) {
     document.head.appendChild(el);
   }
   el.href = href;
-  if (extra) Object.entries(extra).forEach(([k, v]) => el!.setAttribute(k, v));
 }
 
 /* ── Component ──────────────────────────────────────────────── */
 export function SEOHead() {
+  const { pathname } = useLocation();
+
+  /* Static, once per load */
   useEffect(() => {
-    /* Title */
-    document.title = SITE_META.title;
-
-    /* Primary SEO meta tags */
-    setMeta('meta[name="description"]', "name", "description", SITE_META.description);
     setMeta('meta[name="robots"]', "name", "robots", "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1");
-    setMeta('meta[name="keywords"]', "name", "keywords", "joyería de autor Bogotá, anillos de compromiso, alianzas de boda, joyería personalizada, joyería hecha a mano, Minier Joyería");
-    setMeta('meta[name="author"]', "name", "author", "Minier Joyería");
-
-    /* Canonical URL */
-    setLink("canonical", SITE_META.canonical);
-
-    /* Theme colour (mobile browser chrome) */
+    setMeta('meta[name="keywords"]', "name", "keywords", "joyería de autor Bogotá, anillos de compromiso Bogotá, alianzas de boda, joyería personalizada, joyería hecha a mano, Minier Joyería");
+    setMeta('meta[name="author"]', "name", "author", SITE_NAME);
     setMeta('meta[name="theme-color"]', "name", "theme-color", "#0a120d");
-
-    /* Open Graph — Facebook / LinkedIn / WhatsApp / Slack */
-    setMeta('meta[property="og:type"]', "property", "og:type", "website");
-    setMeta('meta[property="og:url"]', "property", "og:url", SITE_META.canonical);
-    setMeta('meta[property="og:site_name"]', "property", "og:site_name", "Minier Joyería");
-    setMeta('meta[property="og:title"]', "property", "og:title", SITE_META.title);
-    setMeta('meta[property="og:description"]', "property", "og:description", SITE_META.description);
-    setMeta('meta[property="og:image"]', "property", "og:image", SITE_META.ogImage);
-    setMeta('meta[property="og:image:secure_url"]', "property", "og:image:secure_url", SITE_META.ogImage);
-    setMeta('meta[property="og:image:type"]', "property", "og:image:type", "image/jpeg");
-    setMeta('meta[property="og:image:width"]', "property", "og:image:width", "1200");
-    setMeta('meta[property="og:image:height"]', "property", "og:image:height", "630");
-    setMeta('meta[property="og:image:alt"]', "property", "og:image:alt", SITE_META.ogImageAlt);
-    setMeta('meta[property="og:locale"]', "property", "og:locale", "es_CO");
-
-    /* Twitter / X Card */
-    setMeta('meta[name="twitter:card"]', "name", "twitter:card", "summary_large_image");
-    setMeta('meta[name="twitter:title"]', "name", "twitter:title", SITE_META.title);
-    setMeta('meta[name="twitter:description"]', "name", "twitter:description", SITE_META.description);
-    setMeta('meta[name="twitter:image"]', "name", "twitter:image", SITE_META.ogImage);
-    setMeta('meta[name="twitter:image:alt"]', "name", "twitter:image:alt", SITE_META.ogImageAlt);
+    setMeta('meta[name="geo.region"]', "name", "geo.region", "CO-DC");
+    setMeta('meta[name="geo.placename"]', "name", "geo.placename", "Bogotá");
 
     /* Performance: preconnect to CDN origins */
     ["https://fonts.googleapis.com", "https://fonts.gstatic.com", "https://images.unsplash.com"].forEach((origin) => {
@@ -140,16 +160,6 @@ export function SEOHead() {
         l.rel = "preconnect";
         l.href = origin;
         if (origin.includes("gstatic")) l.crossOrigin = "anonymous";
-        document.head.appendChild(l);
-      }
-    });
-
-    /* DNS-prefetch as fallback for older browsers */
-    ["https://images.unsplash.com"].forEach((origin) => {
-      if (!document.head.querySelector(`link[rel="dns-prefetch"][href="${origin}"]`)) {
-        const l = document.createElement("link");
-        l.rel = "dns-prefetch";
-        l.href = origin;
         document.head.appendChild(l);
       }
     });
@@ -171,26 +181,47 @@ export function SEOHead() {
       document.head.appendChild(preload);
     }
 
-    /* Inject all JSON-LD schemas as a single script tag */
+    /* JSON-LD */
     const existingScript = document.head.querySelector<HTMLScriptElement>("#schema-jsonld");
     if (existingScript) existingScript.remove();
 
     const script = document.createElement("script");
     script.id = "schema-jsonld";
     script.type = "application/ld+json";
-    script.textContent = JSON.stringify([
-      LOCAL_BUSINESS_SCHEMA,
-      BREADCRUMB_SCHEMA,
-    ]);
+    script.textContent = JSON.stringify([LOCAL_BUSINESS_SCHEMA]);
     document.head.appendChild(script);
 
-    /* html lang attribute for screen reader language announcement */
     document.documentElement.lang = "es";
 
     return () => {
       document.head.querySelector("#schema-jsonld")?.remove();
     };
   }, []);
+
+  /* Per-route: title, description, canonical, Open Graph */
+  useEffect(() => {
+    const { title, description } = metaForPath(pathname);
+    const clean = pathname.replace(/\/+$/, "") || "/";
+    const url = clean === "/" ? `${SITE_URL}/` : `${SITE_URL}${clean}`;
+
+    document.title = title;
+    setMeta('meta[name="description"]', "name", "description", description);
+    setLink("canonical", url);
+
+    setMeta('meta[property="og:type"]', "property", "og:type", "website");
+    setMeta('meta[property="og:site_name"]', "property", "og:site_name", SITE_NAME);
+    setMeta('meta[property="og:title"]', "property", "og:title", title);
+    setMeta('meta[property="og:description"]', "property", "og:description", description);
+    setMeta('meta[property="og:url"]', "property", "og:url", url);
+    setMeta('meta[property="og:image"]', "property", "og:image", `${SITE_URL}/og-image.png`);
+    setMeta('meta[property="og:image:alt"]', "property", "og:image:alt", "Logo de Minier Joyería — emblema dorado sobre verde esmeralda");
+    setMeta('meta[property="og:locale"]', "property", "og:locale", "es_CO");
+
+    setMeta('meta[name="twitter:card"]', "name", "twitter:card", "summary");
+    setMeta('meta[name="twitter:title"]', "name", "twitter:title", title);
+    setMeta('meta[name="twitter:description"]', "name", "twitter:description", description);
+    setMeta('meta[name="twitter:image"]', "name", "twitter:image", `${SITE_URL}/og-image.png`);
+  }, [pathname]);
 
   return null;
 }

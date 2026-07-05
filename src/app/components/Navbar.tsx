@@ -105,7 +105,7 @@ export function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <nav aria-label="Principal" className="hidden md:block" style={{ flex: 1, display: "flex", justifyContent: "center" }}>
+        <nav aria-label="Principal" className="hidden md:flex" style={{ flex: 1, justifyContent: "center" }}>
           <ul role="list" style={{ display: "flex", gap: "2.25rem", listStyle: "none", margin: 0, padding: 0, alignItems: "center" }}>
             {NAV_LINKS.map((link) =>
               link.hasMega ? (
@@ -151,7 +151,6 @@ export function Navbar() {
             border: "1px solid rgba(201,163,86,0.5)",
             padding: "0.6rem 1.4rem",
             textDecoration: "none",
-            display: "inline-flex",
             alignItems: "center",
             minHeight: "40px",
             flexShrink: 0,
@@ -166,12 +165,12 @@ export function Navbar() {
         {/* Hamburger */}
         <button
           ref={hamburgerRef}
-          className="md:hidden"
+          className="flex md:hidden"
           aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
           onClick={() => setMenuOpen((o) => !o)}
-          style={{ background: "none", border: "none", cursor: "pointer", minWidth: "44px", minHeight: "44px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "5px", padding: "0.5rem" }}
+          style={{ background: "none", border: "none", cursor: "pointer", minWidth: "44px", minHeight: "44px", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "5px", padding: "0.5rem" }}
         >
           <span aria-hidden="true" style={{ display: "block", width: "22px", height: "1.5px", background: "#faf8f5", transition: "transform 0.3s, opacity 0.3s", transform: menuOpen ? "translateY(6.5px) rotate(45deg)" : "none" }} />
           <span aria-hidden="true" style={{ display: "block", width: "22px", height: "1.5px", background: "#faf8f5", transition: "opacity 0.3s", opacity: menuOpen ? 0 : 1 }} />

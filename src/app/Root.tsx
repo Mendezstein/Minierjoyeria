@@ -11,10 +11,16 @@ import "../styles/accessibility.css";
  * En la primera visita (pestaña nueva) siempre se entra por el inicio.
  * Al refrescar dentro de una sección, el usuario se queda donde estaba:
  * sessionStorage sobrevive al refresh pero no a cerrar la pestaña.
+ *
+ * Los rastreadores (Googlebot, etc.) quedan exentos: si se les redirige,
+ * las páginas internas nunca se indexan y el SEO por sección se pierde.
  */
+const BOT_UA = /bot|crawler|spider|googlebot|bingbot|duckduckbot|yandex|baiduspider|slurp|facebookexternalhit|whatsapp|telegrambot|twitterbot|linkedinbot|pinterestbot/i;
+
 function RedirectOnFirstVisit() {
   const navigate = useNavigate();
   useEffect(() => {
+    if (BOT_UA.test(navigator.userAgent)) return;
     if (!sessionStorage.getItem("minier-visited")) {
       sessionStorage.setItem("minier-visited", "1");
       if (window.location.pathname !== "/") {
