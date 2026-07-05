@@ -52,6 +52,7 @@ const COLLECTION_DESCRIPTIONS: Record<CollectionId, string> = {
   compromiso: "Anillos de compromiso personalizados en Bogotá, diseñados a tu medida con diamantes y gemas certificadas. Minier Joyería.",
   arretes: "Aretes artesanales en oro 18k, plata y perlas, elaborados a mano en el atelier de Minier Joyería en Bogotá.",
   collares: "Collares y colgantes de alta joyería hechos a mano en Bogotá: oro, plata y gemas seleccionadas. Minier Joyería.",
+  pulseras: "Pulseras artesanales en oro 18k y diamantes, como nuestra pulsera tennis, hechas a mano en Bogotá. Minier Joyería.",
 };
 
 function metaForPath(pathname: string): { title: string; description: string } {
